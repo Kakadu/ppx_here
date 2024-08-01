@@ -12,9 +12,12 @@ let () =
     ~doc:"<dir> Name of the current directory relative to the root of the project"
 
 let chop_dot_slash_prefix ~fname =
-  match Base.String.chop_prefix ~prefix:"./" fname with
+  if  String.starts_with ~prefix:"./" fname
+  then StringLabels.sub fname ~pos:2 ~len:(String.length fname -2)
+  else fname
+  (* match Base.String.chop_prefix ~prefix:"./" fname with
   | Some fname -> fname
-  | None -> fname
+  | None -> fname *)
 
 let expand_filename fname =
   match Filename.is_relative fname, !dirname with
